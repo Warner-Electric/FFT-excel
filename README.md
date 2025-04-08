@@ -13,26 +13,27 @@ This program reads an Excel file containing time series data and signal data, pe
 ## Equations Used
 ### Fast Fourier Transform (FFT)
 The FFT is used to compute the discrete Fourier transform (DFT) of a sequence. The DFT is defined as:
-\[ X(k) = \sum_{n=0}^{N-1} x(n) \cdot e^{-j \cdot 2\pi \cdot k \cdot n / N} \]
+
+$$\[ X(k) = \sum_{n=0}^{N-1} x(n) \cdot e^{-j \cdot 2\pi \cdot k \cdot n / N} \]$$
 where:
-- \( X(k) \) is the DFT result at frequency bin \( k \)
-- \( x(n) \) is the input signal at time index \( n \)
-- \( N \) is the number of samples in the input signal
-- \( j \) is the imaginary unit
+- $$\( X(k) \) is the DFT result at frequency bin \( k \)$$
+- $$\( x(n) \) is the input signal at time index \( n \)$$
+- $$\( N \) is the number of samples in the input signal$$
+- $$\( j \) is the imaginary unit$$
 
 ### Power Spectral Density (PSD)
 The PSD is computed as the square of the magnitude of the FFT result:
-\[ P(k) = |X(k)|^2 \]
+$$\[ P(k) = |X(k)|^2 \]$$
 where:
-- \( P(k) \) is the power at frequency bin \( k \)
-- \( X(k) \) is the FFT result at frequency bin \( k \)
+- $$\( P(k) \) is the power at frequency bin \( k \)$$
+- $$\( X(k) \) is the FFT result at frequency bin \( k \)$$
 
 ### Phase Spectrum
 The phase spectrum is computed as the angle of the FFT result:
-\[ \phi(k) = 	ext{angle}(X(k)) \]
+$$\[ \phi(k) = 	ext{angle}(X(k)) \]$$
 where:
-- \( \phi(k) \) is the phase at frequency bin \( k \)
-- \( X(k) \) is the FFT result at frequency bin \( k \)
+- $$\( \phi(k) \) is the phase at frequency bin \( k \)$$
+- $$\( X(k) \) is the FFT result at frequency bin \( k \)$$
 
 ## Usage
 1. Run the program.
