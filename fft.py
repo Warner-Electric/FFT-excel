@@ -1,0 +1,91 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+import tkinter as tk
+from tkinter import filedialog
+from tkinter import messagebox
+
+# Function to read an Excel file, perform FFT, and graph the results
+def process_excel_fft(file_path):
+    try:
+        # Read the Excel file
+        df = pd.read_excel(file_path, engine='openpyxl')
+        
+        # Extract time and signal data
+        time = df['Time'].values
+        signal = df['Signal'].values
+        
+        # Perform FFT
+        fft_result = np.fft.fft(signal)
+        
+        # Get the frequencies corresponding to the FFT result
+        freqs = np.fft.fftfreq(len(fft_result), d=(time[1] - time[0]))
+        
+        # Create subplots for different visualizations
+        fig, axs = plt.subplots(3, 2, figsize=(12, 12))
+        
+        # Plot the FFT result (Amplitude Spectrum)
+        axs[0, 0].plot(freqs, np.abs(fft_result))
+        axs[0, 0].set_xlabel('Frequency')
+        axs[0, 0].set_ylabel('Amplitude')
+        axs[0, 0].set_title('Amplitude Spectrum')
+        
+        # Plot the Power Spectral Density (PSD)
+        psd = np.abs(fft_result)**2
+        axs[0, 1].plot(freqs, psd)
+        axs[0, 1].set_xlabel('Frequency')
+        axs[0, 1].set_ylabel('Power')
+        axs[0, 1].set_title('Power Spectral Density (PSD)')
+        
+        # Plot the Phase Spectrum
+        phase = np.angle(fft_result)
+        axs[1, 0].plot(freqs, phase)
+        axs[1, 0].set_xlabel('Frequency')
+        axs[1, 0].set_ylabel('Phase')
+        axs[1, 0].set_title('Phase Spectrum')
+        
+        # Plot the FFT result on a logarithmic scale
+        axs[1, 1].plot(freqs, np.log(np.abs(fft_result)))
+        axs[1, 1].set_xlabel('Frequency')
+        axs[1, 1].set_ylabel('Log Amplitude')
+        axs[1, 1].set_title('Logarithmic Scale Amplitude Spectrum')
+        
+        # Plot the Spectrogram
+        axs[2, 0].specgram(signal, Fs=1/(time[1] - time[0]))
+        axs[2, 0].set_xlabel('Time')
+        axs[2, 0].set_ylabel('Frequency')
+        axs[2, 0].set_title('Spectrogram')
+        
+        # Plot the Waterfall Plot (3D plot)
+        ax3d = fig.add_subplot(3, 2, 6, projection='3d')
+        ax3d.plot(freqs, np.abs(fft_result), zs=0, zdir='z', label='Amplitude Spectrum')
+        ax3d.set_xlabel('Frequency')
+        ax3d.set_ylabel('Amplitude')
+        ax3d.set_zlabel('Z')
+        ax3d.set_title('Waterfall Plot (3D FFT Result)')
+        
+        # Adjust layout
+        plt.tight_layout()
+        
+        # Show the plot window
+        plt.show()
+    except Exception as e:
+        messagebox.showerror("Error", f"An error occurred: {e}")
+
+# Function to open a file dialog and select an Excel file
+def select_file():
+    file_path = filedialog.askopenfilename(filetypes=[("Excel files", "*.xlsx")])
+    if file_path:
+        process_excel_fft(file_path)
+
+# Create the main window
+root = tk.Tk()
+root.title("Excel FFT Processor")
+
+# Create and place a button to select a file
+select_button = tk.Button(root, text="Select Excel File", command=select_file)
+select_button.pack(pady=20)
+
+# Run the Tkinter event loop
+root.mainloop()
