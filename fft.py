@@ -87,5 +87,14 @@ root.title("Excel FFT Processor")
 select_button = tk.Button(root, text="Select Excel File", command=select_file)
 select_button.pack(pady=20)
 
+# Create a text widget to display instructions for Excel formatting
+instructions_text = tk.Text(root, wrap=tk.WORD)
+instructions_text.insert(tk.END, "Instructions for Excel Formatting:\n\n")
+instructions_text.insert(tk.END, "1. Ensure your Excel file has two columns: 'Time' and 'Signal'.\n")
+instructions_text.insert(tk.END, "2. The 'Time' column should contain time values in seconds.\n")
+instructions_text.insert(tk.END, "3. The 'Signal' column should contain corresponding signal values.\n")
+instructions_text.insert(tk.END, "4. Save your Excel file with a .xlsx extension.\n")
+instructions_text.pack(pady=20)
+
 # Run the Tkinter event loop
 root.mainloop()
