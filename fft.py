@@ -7,7 +7,7 @@ from tkinter import filedialog
 from tkinter import messagebox
 
 # Function to read an Excel file, perform FFT, and graph the results
-def process_excel_fft(file_path):
+def process_excel_fft(file_path, time_base=None):
     try:
         # Read the Excel file
         df = pd.read_excel(file_path, engine='openpyxl')
@@ -15,6 +15,10 @@ def process_excel_fft(file_path):
         # Extract time and signal data
         time = df['Time'].values
         signal = df['Signal'].values
+        
+        # If a custom time base is provided, adjust the time array
+        if time_base is not None:
+            time = np.arange(0, len(signal) * time_base, time_base)
         
         # Perform FFT
         fft_result = np.fft.fft(signal)
@@ -77,7 +81,12 @@ def process_excel_fft(file_path):
 def select_file():
     file_path = filedialog.askopenfilename(filetypes=[("Excel files", "*.xlsx")])
     if file_path:
-        process_excel_fft(file_path)
+        try:
+            time_base = float(time_base_entry.get())
+        except ValueError:
+            messagebox.showerror("Error", "Invalid time base value. Please enter a valid number.")
+            return
+        process_excel_fft(file_path, time_base=time_base)
 
 # Create the main window
 root = tk.Tk()
@@ -86,6 +95,12 @@ root.title("Excel FFT Processor")
 # Create and place a button to select a file
 select_button = tk.Button(root, text="Select Excel File", command=select_file)
 select_button.pack(pady=20)
+
+# Create an entry widget for the time base
+time_base_label = tk.Label(root, text="Enter Time Base (seconds):")
+time_base_label.pack(pady=5)
+time_base_entry = tk.Entry(root)
+time_base_entry.pack(pady=5)
 
 # Create a text widget to display instructions for Excel formatting
 instructions_text = tk.Text(root, wrap=tk.WORD)
