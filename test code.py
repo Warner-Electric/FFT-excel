@@ -12,14 +12,14 @@ signal = (np.sin(2 * np.pi * 1 * time) * np.exp(-0.1 * time) +  # 1 Hz component
           np.sin(2 * np.pi * 7 * time) * np.exp(-0.02 * time) +  # 7 Hz component with very slow decay
           np.sin(2 * np.pi * 10 * time) +  # 10 Hz component without decay
           np.sin(2 * np.pi * 15 * time) +  # 15 Hz component without decay
-          np.sin(2 * np.pi * 200 * time) +  # 200 Hz component without decay
-          np.random.normal(0, 0.5, time.shape))  # Noise
+          np.sin(2 * np.pi * 200 * time))   # 200 Hz component without decay
+         # np.random.normal(0, 0.5, time.shape))  # Noise
 
 # Create a DataFrame
 df = pd.DataFrame({'Time': time, 'Signal': signal})
 
 # Save the DataFrame to an Excel file
-file_path = 'wider_frequency_ranges_dataset.xlsx'
+file_path = 'wider_frequency_ranges_dataset_noNoise.xlsx'
 df.to_excel(file_path, index=False, engine='openpyxl')
 
 print(f"Dataset with wider frequency ranges saved to {file_path}")
